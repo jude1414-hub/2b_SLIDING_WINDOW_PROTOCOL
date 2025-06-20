@@ -16,39 +16,35 @@ Reg no : 212224230109
 Client.py
 
 ```
-
-import socket
-from datetime import datetime
- 
-s=socket.socket()
- 
-s.bind(('localhost',8080))
- 
-s.listen(5)
-c,addr=s.accept()
-print("Client Address : ",addr)
- 
-now = datetime.now()
- 
-c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
-ack=c.recv(1024).decode()
- 
-if ack:
-    print(ack)
-c.close()
+import socket 
+s=socket.socket() 
+s.bind(('localhost',9999)) 
+s.listen(5) 
+c,addr=s.accept() 
+size=int(input("Enter number of frames to send : ")) 
+l=list(range(size)) 
+s=int(input("Enter Window Size : ")) 
+st=0 
+i=0 
+while True: 
+    while(i<len(l)): 
+            st+=s 
+            c.send(str(l[i:st]).encode()) 
+            ack=c.recv(1024).decode() 
+            if ack: 
+                print(ack) 
+                i+=s
 ```
 
 
 Server.py
 ```
-
 import socket 
 s=socket.socket() 
-s.connect(('localhost',8080)) 
-print(s.getsockname()) 
-print(s.recv(1024).decode()) 
-s.send("acknowledgement recived from the server".encode()) 
-
+s.connect(('localhost',9999))
+while True:    
+    print(s.recv(1024).decode()) 
+    s.send("acknowledgement recived from the server".encode())
 ```
 ## OUPUT
 
